@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>3-State Switch</title>
+
+    <style>
+        body {
+            margin-left: 100px;
+            margin-top: 100px;
+        }
+
+        .tri-state-toggle {
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: inset 0 2px 8px 0 rgba(165, 170, 174, 0.25);
+            border-radius: 24px;
+            display: inline-block;
+            overflow: hidden;
+            display: inline-flex;
+            flex-direction: row;
+            transition: all 500ms ease;
+        }
+
+        .tri-state-toggle-button {
+            border-radius: 22px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            background-color: transparent;
+            border: 0px solid transparent;
+            margin: 2px;
+            color: white;
+            cursor: pointer;
+
+            /*    -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition:    all 0.5s ease-in-out;
+  -ms-transition:     all 0.5s ease-in-out;
+  -o-transition:      all 0.5s ease-in-out; */
+            transition: all 0.5s ease;
+        }
+
+        .tri-state-toggle-button.active {
+            background-image: linear-gradient(90deg,
+                    rgba(229, 3, 87, 1) 0%,
+                    rgba(229, 3, 56, 1) 35%,
+                    rgba(219, 101, 17, 1) 100%);
+            border: 0px solid rgba(207, 207, 207, 0.6);
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1);
+            color: white;
+            font-weight: 500;
+            transition: all .5s ease-in;
+        }
+
+        .tri-state-toggle-button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <h3>Select any one option:</h3>
+    <div class="tri-state-toggle">
+        <button class="tri-state-toggle-button" id="toggle-button1">
+            Song
+        </button>
+
+        <button class="tri-state-toggle-button" id="toggle-button2">
+            Video
+        </button>
+
+        <button class="tri-state-toggle-button" id="toggle-button3">
+            Party
+        </button>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $("#toggle-button1").addClass("active");
+            $(".tri-state-toggle-button").click(function () {
+                $(".tri-state-toggle-button").removeClass("active");
+                var id = $(this).attr('id');
+                $("#" + id).addClass("active");
+            });
+        });;
+
+    </script>
+</body>
+
+</html>
+
+
+\
+
+<div class="col todo">
+    <!--TODO Head-->
+    <div class="row w-100">
+        <div class="container-fluid todo-title">
+            <p class="">T O D O</p>
+            <i class="fa-solid fa-moon"></i>
+        </div>
+    </div>
+    <!--TODO Input-->
+    <div class="row todo-inpput">
+        <input type="text" placeholder="Enter Title" />
+        <input id="id" type="hidden">
+        <button type="button" class="btn btn-danger">
+            <i class="fa-solid fa-plus"></i>
+        </button>
+    </div>
+    <!-- TODO Body-->
+    <div class="row todo-body">
+        <div class="col">
+            <div class="row todo-ul">
+                <ul class="todo-li">
+
+                </ul>
+            </div>
+            <!-- TODO Footer-->
+            <hr>
+            <div class="row todo-footer">
+
+                <div class="items">
+                    <h6>Items</h6>
+                </div>
+
+                <div class="btn-group">
+                    <button class="bt btn1" aria-current="page">All</button>
+                    <button class="bt btn2">Active</button>
+                    <button class="bt btn3">Completed</button>
+                </div>
+
+                <button class=" clear">Clear All</button>
+            </div>
+        </div>
+    </div>
+</div>

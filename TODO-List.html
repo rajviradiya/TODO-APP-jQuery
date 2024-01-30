@@ -24,50 +24,48 @@
 </head>
 
 <body>
-    <div class="container-fluid App">
-        <div class="col">
+    <div class="container-fluid  p-0 ">
+        <div class="col-xl-12 App">
             <!-- TODO Background Image-->
             <div class="row head"></div>
             <!-- TODO Space-->
             <div class="row body2">
                 <div class="col todo">
                     <!--TODO Head-->
-                    <div class="row w-100">
-                        <div class="container-fluid todo-title">
-                            <p class="">T O D O</p>
-                            <i class="fa-solid fa-moon"></i>
-                        </div>
+                    <div class="row  todo-title">
+                        <p>T O D O</p>
+                        <i class="fa-solid fa-moon"></i>
                     </div>
                     <!--TODO Input-->
                     <div class="row todo-inpput">
-                        <input type="text" placeholder="Enter Title" />
+                        <input type="text" id="input1" placeholder="Enter Title" />
+                        <input id="txtId" type="hidden" class="form-control txt">
                         <button type="button" class="btn btn-danger">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                     </div>
                     <!-- TODO Body-->
                     <div class="row todo-body">
-                        <div class="col">
-                            <div class="row todo-ul">
-                                <ul class="todo-li">
+                        <div class="container-fluid">
+                            <div class="col p-0">
+                                <div class="row m-1 ">
+                                    <ul class="todo-li">
 
-                                </ul>
-                            </div>
-                            <!-- TODO Footer-->
-                            <hr>
-                            <div class="row todo-footer">
-
-                                <div class="items">
-                                    <h6>Items</h6>
+                                    </ul>
                                 </div>
-
-                                <div class="btn-group">
-                                    <button class="bt btn1" aria-current="page">All</button>
-                                    <button class="bt btn2">Active</button>
-                                    <button class="bt btn3">Completed</button>
+                                <!-- TODO Footer-->
+                                <hr class="m-1">
+                                <div class="row m-1 todo-footer">
+                                    <div class="items">
+                                        <h6>Items</h6>
+                                    </div>
+                                    <div class="btn-group">
+                                        <button class="bt btn1" aria-current="page">All</button>
+                                        <button class="bt btn2">Active</button>
+                                        <button class="bt btn3">Completed</button>
+                                    </div>
+                                    <button class=" clear">Clear All</button>
                                 </div>
-
-                                <button class=" clear">Clear All</button>
                             </div>
                         </div>
                     </div>
@@ -75,9 +73,6 @@
             </div>
         </div>
     </div>
-
-
-
     <script src="./Main.js"></script>
 </body>
 

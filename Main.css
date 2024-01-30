@@ -1,59 +1,65 @@
 * {
-    margin: 0px;
-    padding: 0px;
+    margin: 0px ;
+    padding: 0px ;
     font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
-.app {
-    height: 100%;
-    width: 100vw;
+.App {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .head {
-    height: 46vh;
     width: 100%;
+    height: 33vh;
     background-image: linear-gradient(rgba(9, 8, 8, 0.527), rgba(10, 10, 10, 0.5)),
         url("./images/background-image.webp");
     background-repeat: none;
     background-size: cover;
-    position: fixed;
-    top: -60px;
     opacity: 0.8;
+    margin: 0px !important;
 }
 
 .body2 {
-    height: 70vh;
-    background-color: white;
+    height: 67vh;
     display: flex;
     justify-content: center;
+    margin: 0px !important;
 }
 
 .todo {
-    width: 37% !important;
+    width: 35% !important;
     background-color: transparent;
     position: fixed;
-    top: 100px;
-    padding: 10px !important;
+    top: 10vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 0px !important;
 }
 
 .todo-title {
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center !important;
     font-weight: 400 !important;
     font-size: 20px;
     color: white;
+    align-items: center;
     margin-bottom: 20px;
 }
 
-.todo-title .p {
-    width: 100%;
-    height: 100%;
+.todo-title p {
+    width: 85% !important;
+    padding: 0px 0px 0px 10px ;
+    margin:  0px ;
+}
+
+.todo-title i {
+    width: 15% !important;
+    text-align: center;
+    margin:  0px;
 }
 
 /* TODO input*/
@@ -62,21 +68,24 @@
     display: flex;
     justify-content: space-between;
     font-size: 17px;
+    margin: 0px 0px 20px 0px;
 }
 
 .todo-inpput input {
-    width: 88%;
+    width: 85%;
     padding: 10px;
     border: 2px solid white;
     border-radius: 5px;
     box-shadow: 0px 0px 5px rgba(10, 10, 10, 0.5);
-    margin: 0px 0px 20px 0px;
 }
 
 .todo-inpput button {
-    width: 10%;
-    height: 50px;
-    margin: 0px 0px 20px 0px;
+    width: 13%;
+}
+
+.todo-inpput button i{
+    color: white;
+    text-align: center;
 }
 
 /* TODO body */
@@ -86,41 +95,42 @@
     border: 2px solid white;
     border-radius: 5px;
     box-shadow: 0px 0px 5px rgba(10, 10, 10, 0.5);
-    padding: 10px;
 }
 
 .todo-li {
-    padding: 5px !important;
-    margin: 0px !important;
+    margin: 15px 0px 0px 0px !important;
+    height:  40vh;
+    overflow-y: scroll;
+}
+
+.todo-li::-webkit-scrollbar{
+    display: none;
 }
 
 .todo-li li {
     width: 100%;
-    display: flex;
     list-style: none;
     font-size: large;
-    justify-content: space-between;
-}
-
-.switch {
-    width: 80% !important;
     display: flex;
-    flex-direction: row;
-    align-items: center;    
+    align-items: center;
 }
 
-.switch label {
-    width: 97%;
-    overflow: hidden;
-    margin-left: 2%;
+.lable1 {
+    width: 65% !important;  
 }
 
-.switch label::-webkit-scrollbar {
+.lable1 label {
+    width: 100% !important;
+    overflow: hidden !important;
+    padding-left: 3px !important;
+}
+
+.lable1 label::-webkit-scrollbar {      
     display: none;
 }
 
 .f-button {
-    width: 20% !important;
+    width: 20% ;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -128,89 +138,25 @@
 }
 
 .f-button button {
-    width: 40% !important;
+    width: 100% !important;
     background-color: transparent;
     border: none;
-}
-
-.strike {
-    text-decoration: line-through;
-}
-
-.non-strike {
-    text-decoration: none;
-}
-
-/* Todo footer*/
-.todo-footer {
-    width: 100%;
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: space-between;
-    align-items: center;
-    color: rgba(10, 10, 10, 0.5) !important;
-    font-size: 14px;
-}
-
-/*item*/
-.items {
-    width: 20% !important;
-}
-
-/*button Group*/
-.btn-group {
-    width: 50% !important;
-    text-align: center;
-}
-
-.btn1 {
-    width: 20%;
-    text-decoration: none;
-    color: rgba(10, 10, 10, 0.5);
-    background-color: transparent;
-    border: none;
-}
-
-.btn2 {
-    width: 40%;
-    text-decoration: none;
-    color: rgba(10, 10, 10, 0.5);
-    background-color: transparent;
-    border: none;
-}
-
-.btn3 {
-    width: 40%;
-    text-decoration: none;
-    color: rgba(10, 10, 10, 0.5);
-    background-color: transparent;
-    border: none;
-}
-
-/*clear Button */
-.clear {
-    width: 20% !important;
-    border: none;
-    background-color: transparent !important;
-    color: rgba(9, 8, 8, 0.527);
 }
 
 /*switch*/
 .wrapper {
-    width: 200px;
-    display: flex;
-    justify-content: center;
+    width: 15% ;
 }
 
 #custom-toggle {
     -webkit-appearance: none;
     appearance: none;
-    height: 20px;
-    width: 40px;
+    height: 21px;
+    width: 44px;
     background-color: #333;
-    -webkit-border-radius: 25px;
-    border-radius: 25px;
-    padding: 0 2px;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
+    padding: 5px 4px;
     margin: 0;
     cursor: pointer;
 }
@@ -240,6 +186,65 @@
     outline: none;
 }
 
-.rangeActive {
-    background-color: green;
+
+/*
+.strike {
+    text-decoration: line-through;
+}
+
+.non-strike {
+    text-decoration: none;
+}
+*/
+
+/* Todo footer*/
+.todo-footer {
+    width: 100% !important;
+    color: rgba(10, 10, 10, 0.5) !important;
+    font-size: 14px;
+}
+/*item*/
+.items {
+    width: 20% !important;
+    align-items: center;
+    padding-top: 3px;
+
+}
+/*button Group*/
+.btn-group {
+    width: 50% !important;
+    text-align: center;
+    margin: 0px !important;
+}
+
+.btn1 {
+    width: 20%;
+    text-decoration: none;
+    color: rgba(10, 10, 10, 0.5);
+    background-color: transparent;
+    border: none;
+}
+
+.btn2 {
+    width: 40%;
+    text-decoration: none;
+    color: rgba(10, 10, 10, 0.5);
+    background-color: transparent;
+    border: none;
+}
+
+.btn3 {
+    width: 40%;
+    text-decoration: none;
+    color: rgba(10, 10, 10, 0.5);
+    background-color: transparent;
+    border: none;
+}
+
+/*clear Button */
+.clear {
+    width: 30% !important;
+    border: none;
+    background-color: transparent !important;
+    color: rgba(9, 8, 8, 0.527);
 }
