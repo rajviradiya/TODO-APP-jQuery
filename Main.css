@@ -30,7 +30,7 @@
 }
 
 .todo {
-    width: 35% !important;
+    width: 40% !important;
     background-color: transparent;
     position: fixed;
     top: 10vh;
@@ -116,7 +116,7 @@
 }
 
 .lable1 {
-    width: 65% !important;  
+    width: 45% !important;  
 }
 
 .lable1 label {
@@ -129,6 +129,13 @@
     display: none;
 }
 
+.timer{
+    width: 20% !important;
+    font-size: 15px;
+    border: 1px solid white;
+    text-align: center;
+    box-shadow: 0px 0px 2px black;
+}
 .f-button {
     width: 20% ;
     display: flex;

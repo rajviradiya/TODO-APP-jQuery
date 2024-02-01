@@ -19,9 +19,8 @@ $(document).ready(function () {
 
    /**Edit element*/
    $(".todo-li").on("click", ".editBtn", function () {
-      const title = $(this).parent(".f-button").prev(".lable1").find("label").html();
+      const title = $(this).parent(".f-button").prevAll(".lable1").find("label").html();
       const id = $(this).parents("li").find("input").attr("data-id");
-
       $("#input1").val(title);
       $("#txtId").val(id);
       $(".todo-inpput").find("button").html(`<i class="fa-solid fa-file-export"></i>`);
@@ -55,12 +54,91 @@ $(document).ready(function () {
    $(".btn3").on("click", function () {
       Complited()
    })
+
+   /*Timer*/
+   $(".todo-li").on("click", "#custom-toggle", function () {
+      const timerId = $(this).parent(".wrapper").nextAll(".timer").find(".time").attr("data-timer")
+      console.log(timerId)
+      if ($(this).val() == 1) {
+         resetTimer(timerId);
+      } else if ($(this).val() == 2) {
+         startTimer(timerId);
+      } else if ($(this).val() == 3) {
+         stopTimer(timerId);
+      }
+   });
+
+
 });
 
+const timers = [];
+
+function createTimer(timerId) {
+   return {
+      id: timerId,
+      startTime: null,
+      timerInterval: null,
+      elapsedTime: 0,
+   };
+}
+function getTimer(timerId) {
+   return timers.find(timer => timerId == timer.id);
+}
+
+function startTimer(timerId) {
+   let localData = JSON.parse(localStorage.getItem("localData"));
+   console.log(localData,"localdatad")
+
+   const timer = getTimer(timerId);
+   if (!timer.startTime) {
+      timer.startTime = moment();
+      timer.timerInterval = setInterval(() => updateTimer(timer,localData), 1000);
+   }
+   console.log("start")
+}
+
+function updateTimer(timer,localData) {
+ 
+   const currentTime = moment();
+   const duration = moment.duration(currentTime.diff(timer.startTime) + timer.elapsedTime, 'milliseconds');
+   const formattedTime = moment.utc(duration.asMilliseconds()).format('h:mm:ss');
+   $(`#timer${timer.id}`).text(formattedTime);
+
+    localData.forEach((element) => {
+      if(element.id == timer.id){
+         return element.starttime = formattedTime;
+      } 
+   })
+
+   localStorage.setItem("localData", JSON.stringify(localData));
+}
+
+function stopTimer(timerId) {
+   const timer = getTimer(timerId);
+   if (timer.startTime) {
+      clearInterval(timer.timerInterval);
+      timer.elapsedTime += moment().diff(timer.startTime);
+      timer.startTime = null;
+   }
+   console.log("stop")
+}
+
+function resetTimer(timerId) {
+   const timer = getTimer(timerId);
+   clearInterval(timer.timerInterval);
+   timer.startTime = null;
+   timer.elapsedTime = 0;
+   $(`#timer${timer.id}`).text('0:00:00');
+}
+
+console.log(timers)
 /*load html data */
+
+
 function loadDataFromLocal() {
    let localdata = localStorage.getItem("localData");
    let localArray = JSON.parse(localdata);
+   console.log(localArray)
 
    if (localdata !== null && localdata !== undefined) {
       localArray.forEach((element) => {
@@ -71,6 +149,8 @@ function loadDataFromLocal() {
          dynamicList += `<div class="lable1">`;
          dynamicList += `<label class="titleLable overflow-hidden">${element.title}</label>`;
          dynamicList += `</div>`;
+         dynamicList += `<div class="timer">`;
+         dynamicList += `<div class="time"  id="timer${element.id}" data-timer=${element.id}>${element.starttime}</div>`
          dynamicList += `</div>`;
          dynamicList += `<div class= "f-button">`;
          dynamicList += `<button class="editBtn"><i class="fa-solid fa-pen-to-square"></i></button>`;
@@ -78,6 +158,7 @@ function loadDataFromLocal() {
          dynamicList += `</div>`;
          dynamicList += `</li>`;
          $(".todo-li").append(dynamicList);
+         timers.push(createTimer(element.id));
       })
    }
 }
@@ -95,6 +176,8 @@ function addDataToLocal(input1) {
             id: localArray.length + 1,
             state: "1",
             color: "tgl-on",
+            starttime: "0:00:00",
+            stoptime: "0:00:00",
             title: inputval,
          };
          localArray.push(obj);
@@ -107,7 +190,9 @@ function addDataToLocal(input1) {
          let obj = {
             id: 1,
             state: "1",
-            color:"tgl-on",
+            color: "tgl-on",
+            starttime: "0:00:00",
+            stoptime: "0:00:00",
             title: inputval,
          };
          arryObj.push(obj);
@@ -139,10 +224,10 @@ function switchElement(element) { //#custom-toggle switch = element
    } else if (value === 1 && state === 2) {
       state = 2;
       element.val(state);
-   } else if(value === 2 && state === 1){
+   } else if (value === 2 && state === 1) {
       state = 3;
       element.val(state);
-   }else {
+   } else {
       state = 1;
       element.val(state);
    }
@@ -164,6 +249,48 @@ function switchElement(element) { //#custom-toggle switch = element
    });
 }
 
+/**Timer */
+
+
+/*
+function timer(element,timerval) {
+   let timerInterval;
+   let startTime;
+   let elapsedTime = 0;
+   
+
+   if(timerval == "startTimer"){
+      startTimer(element,startTime, timerInterval, elapsedTime)
+   }else if(timerval == "stopTimer"){
+      stopTimer(element,timerInterval,startTime,elapsedTime)
+   }   
+}
+
+
+function startTimer(element,startTime, timerInterval, elapsedTime) {
+   startTime = moment();
+   timerInterval = setInterval(function () {
+      const currentTime = moment();
+      const duration = moment.duration(currentTime.diff(startTime) + elapsedTime, 'milliseconds');
+      formattedTime = moment.utc(duration.asMilliseconds()).format('H:mm:ss');
+      element.parent(".wrapper").nextAll(".timer").find(".time").text(formattedTime);
+   }, 1000);
+}
+
+function stopTimer(element,timerInterval,startTime,elapsedTime) {
+   if (timerInterval) {
+      clearInterval(timerInterval);
+      elapsedTime += moment().diff(startTime);
+   }
+   console.log(timerInterval,"timerval")
+}
+
+function resetTimer() {
+   clearInterval(timerInterval);
+   elapsedTime = 0;
+   $('#timer').text('0:00:00');
+}
+*/
 /**Edit Fuctionality */
 function updateDataFromLocal() {
    let localData = localStorage.getItem("localData");
@@ -173,7 +300,6 @@ function updateDataFromLocal() {
    oldRecord.title = $(".todo-inpput").find("#input1").val();
    $(".todo-inpput").find("button").html(`<i class="fa-solid fa-plus"></i>`);
    $("totdo-inpput").find("#input1").val("");
-   console.log(oldRecord)
    localStorage.setItem("localData", JSON.stringify(localArray));
    location.reload(true);
 }
@@ -181,23 +307,16 @@ function updateDataFromLocal() {
 // All list
 function All() {
    let val = $(".todo-li").empty()
-   console.log(val,"val")
-         loadDataFromLocal()
-   }
+   loadDataFromLocal()
+}
 //Pending list
 function Active() {
    let val = $(".todo-li").empty()
-   console.log(val,"val")
-
    let localdata = localStorage.getItem("localData");
    let localArray = JSON.parse(localdata);
-
-   console.log(localArray)
-   
    const filterArray = localArray.filter((data) => {
-     return data.state == "2"
+      return data.state == "2"
    })
-   console.log(filterArray)
    filterArray.forEach((element) => {
       let dynamicList = `<li class ="" id=${element.id}>`;
       dynamicList += `<div class="wrapper">`;
@@ -205,6 +324,9 @@ function Active() {
       dynamicList += `</div>`;
       dynamicList += `<div class="lable1">`;
       dynamicList += `<label class="titleLable overflow-hidden">${element.title}</label>`;
+      dynamicList += `</div>`;
+      dynamicList += `<div class="timer">`;
+      dynamicList += `<div class="time">hh:mm:ss</div>`
       dynamicList += `</div>`;
       dynamicList += `<div class= "f-button">`;
       dynamicList += `<button class="editBtn"><i class="fa-solid fa-pen-to-square"></i></button>`;
@@ -215,19 +337,14 @@ function Active() {
    })
 }
 //Complited list
-function Complited(){
+function Complited() {
    let val = $(".todo-li").empty()
-   console.log(val,"val")
    let localdata = localStorage.getItem("localData");
    let localArray = JSON.parse(localdata);
 
-   console.log(localArray)
-   
    const filterArray = localArray.filter((data) => {
-     return data.state == "3"
+      return data.state == "3"
    })
-   console.log(filterArray)
-   console.log(filterArray)
    filterArray.forEach((element) => {
       let dynamicList = `<li class ="" id=${element.id}>`;
       dynamicList += `<div class="wrapper">`;
@@ -235,6 +352,9 @@ function Complited(){
       dynamicList += `</div>`;
       dynamicList += `<div class="lable1">`;
       dynamicList += `<label class="titleLable overflow-hidden">${element.title}</label>`;
+      dynamicList += `</div>`;
+      dynamicList += `<div class="timer">`;
+      dynamicList += `<div class="time">hh:mm:ss</div>`
       dynamicList += `</div>`;
       dynamicList += `<div class= "f-button">`;
       dynamicList += `<button class="editBtn"><i class="fa-solid fa-pen-to-square"></i></button>`;
