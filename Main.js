@@ -1,6 +1,7 @@
 $(document).ready(function () {
    loadDataFromLocal();
-
+   startRunningTimersOnLoad();
+   //add loclal storage & update data
    $(".todo-inpput").on("click", "button", function () {
       if ($("#txtId").val() == "") {
          addDataToLocal($(this));
@@ -49,8 +50,6 @@ $(document).ready(function () {
       loadDataFromLocal()
    });
 
-
-
    /*clear All*/
    $(".clear").on("click", function () {
       const clearall = $(this).parents(".todo-body").find(".todo-li").empty();
@@ -84,85 +83,6 @@ $(document).ready(function () {
 
 });
 
-/**Timer */
-const timers = [];
-
-function createTimer(timerId) {
-   return {
-      id: timerId,
-      startTime: null,
-      timerInterval: null,
-      elapsedTime: 0,
-   };
-}
-function getTimer(timerId) {
-   return timers.find(timer => timerId == timer.id);
-}
-// start timer
-function startTimer(timerId) {
-   let localData = JSON.parse(localStorage.getItem("localData"));
-   let time = moment().format('h:mm:ss')
-   localData.forEach((element) => {
-      if (element.id == timerId) {
-         element.starttime = time;
-      }
-   })
-   localStorage.setItem("localData", JSON.stringify(localData));
-   const timer = getTimer(timerId);
-   if (!timer.startTime) {
-      timer.startTime = moment();
-      timer.timerInterval = setInterval(() => updateTimer(timer), 1000);
-   }
-}
-//update timer
-function updateTimer(timer) {
-   let localData = JSON.parse(localStorage.getItem("localData"));
-   const currentTime = moment();
-   const duration = moment.duration(currentTime.diff(timer.startTime) + timer.elapsedTime, 'milliseconds');
-   const formattedTime = moment.utc(duration.asMilliseconds()).format('H:mm:ss');
-   $(`#timer${timer.id}`).text(formattedTime);
-
-   localData.forEach((element) => {
-      if (element.id == timer.id) {
-         return element.currentTime = formattedTime;
-      }
-   })
-   localStorage.setItem("localData", JSON.stringify(localData));
-}
-//stop timer
-function stopTimer(timerId) {
-   let localData = JSON.parse(localStorage.getItem("localData"));
-   let time = moment().format("h:mm:ss")
-   localData.forEach((element) => {
-      if (element.id == timerId) {
-         element.endtime = time;
-      }
-   })
-   localStorage.setItem("localData", JSON.stringify(localData));
-   const timer = getTimer(timerId);
-   if (timer.startTime) {
-      clearInterval(timer.timerInterval);
-      timer.elapsedTime += moment().diff(timer.startTime);
-      timer.startTime = null;
-   }
-}
-//reset timer
-function resetTimer(timerId) {
-   const timer = getTimer(timerId);
-   clearInterval(timer.timerInterval);
-   timer.startTime = null;
-   timer.elapsedTime = 0;
-   $(`#timer${timer.id}`).text('0:00:00');
-   let localData = JSON.parse(localStorage.getItem("localData"));
-   localData.forEach((element) => {
-      if (element.id == timerId) {
-         element.starttime = "0:00:00";
-         element.endtime = "0:00:00";
-         element.currentTime = "0:00:00";
-      }
-   });
-   localStorage.setItem("localData", JSON.stringify(localData));
-}
 /*load html data */
 function loadDataFromLocal() {
    let localdata = localStorage.getItem("localData");
@@ -231,6 +151,7 @@ function addDataToLocal(input1) {
    }
 }
 
+
 /**switch function */
 let state = 1;
 
@@ -238,6 +159,7 @@ function switchElement(element) { //#custom-toggle switch = element
    let localData = localStorage.getItem("localData");
    let localArray = JSON.parse(localData);
    let value = parseInt(element.val(), 10);
+
    if (value === 1 && state === 1) {
       state = 2;
       element.val(state);
@@ -254,7 +176,10 @@ function switchElement(element) { //#custom-toggle switch = element
       state = 2;
       element.val(state);
    } else if (value === 2 && state === 1) {
-      state = 3;
+      state = 1;
+      element.val(state);
+   } else if (value === 3 && state === 2) {
+      state = 2;
       element.val(state);
    } else {
       state = 1;
@@ -276,6 +201,105 @@ function switchElement(element) { //#custom-toggle switch = element
       }
       localStorage.setItem("localData", JSON.stringify(localArray));
    });
+}
+
+/**Timer */
+const timers = [];
+
+function createTimer(timerId) {
+   return {
+      id: timerId,
+      startTime: null,
+      timerInterval: null,
+      elapsedTime: 0,
+   };
+}
+
+function getTimer(timerId) {
+   return timers.find(timer => timerId == timer.id);
+}
+
+function startRunningTimersOnLoad() {
+   let localData = JSON.parse(localStorage.getItem("localData"));
+   if (localData) {
+      localData.forEach((element) => {
+         if (element.state == "2") {
+            const timer = createTimer(element.id);
+            console.log(element.id,timer)
+            timer.elapsedTime = element.elapsedTime || 0;
+            timer.startTime = element.starttime ? moment(element.starttime, 'h:mm:ss') : null;
+            timer.timerInterval = setInterval(() => updateTimer(timer), 1000);
+            timers.push(timer);
+         }
+      });
+   }
+}
+
+
+// start timer
+function startTimer(timerId) {
+   let localData = JSON.parse(localStorage.getItem("localData"));
+   let time = moment().format('h:mm:ss')
+   localData.forEach((element) => {
+      if (element.id == timerId) {
+         element.starttime = time;
+      }
+   })
+   localStorage.setItem("localData", JSON.stringify(localData));
+   const timer = getTimer(timerId);
+   if (!timer.startTime) {
+      timer.startTime = moment();
+      timer.timerInterval = setInterval(() => updateTimer(timer), 1000);
+   }
+}
+//update timer
+function updateTimer(timer) {
+   let localData = JSON.parse(localStorage.getItem("localData"));
+   const currentTime = moment();
+   const duration = moment.duration(currentTime.diff(timer.startTime) + timer.elapsedTime, 'milliseconds');
+   const formattedTime = moment.utc(duration.asMilliseconds()).format('H:mm:ss');
+   $(`#timer${timer.id}`).text(formattedTime);
+
+   localData.forEach((element) => {
+      if (element.id == timer.id) {
+         return element.currentTime = formattedTime;
+      }
+   })
+   localStorage.setItem("localData", JSON.stringify(localData));
+}
+//stop timer
+function stopTimer(timerId) {
+   let localData = JSON.parse(localStorage.getItem("localData"));
+   let time = moment().format("h:mm:ss")
+   localData.forEach((element) => {
+      if (element.id == timerId) {
+         element.endtime = time;
+      }
+   })
+   localStorage.setItem("localData", JSON.stringify(localData));
+   const timer = getTimer(timerId);
+   if (timer.startTime) {
+      clearInterval(timer.timerInterval);
+      timer.elapsedTime += moment().diff(timer.startTime);
+      timer.startTime = null;
+   }
+}
+//reset timer
+function resetTimer(timerId) {
+   const timer = getTimer(timerId);
+   clearInterval(timer.timerInterval);
+   timer.startTime = null;
+   timer.elapsedTime = 0;
+   $(`#timer${timer.id}`).text('0:00:00');
+   let localData = JSON.parse(localStorage.getItem("localData"));
+   localData.forEach((element) => {
+      if (element.id == timerId) {
+         element.starttime = "0:00:00";
+         element.endtime = "0:00:00";
+         element.currentTime = "0:00:00";
+      }
+   });
+   localStorage.setItem("localData", JSON.stringify(localData));
 }
 
 /**Edit Fuctionality */
