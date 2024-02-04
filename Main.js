@@ -23,17 +23,11 @@ $(document).ready(function () {
    });
    /**Edit element*/
    $(".todo-li").on("click", ".editBtn", function () {
-      const title = $(this)
-         .parent(".f-button")
-         .prevAll(".lable1")
-         .find("label")
-         .html();
+      const title = $(this).parent(".f-button").prevAll(".lable1").find("label") .html();
       const id = $(this).parents("li").find("input").attr("data-id");
       $("#input1").val(title);
       $("#txtId").val(id);
-      $(".todo-inpput")
-         .find("button")
-         .html(`<i class="fa-solid fa-file-export"></i>`);
+      $(".todo-inpput").find("button").html(`<i class="fa-solid fa-file-export"></i>`);
    });
    /*delete*/
    $(".todo-li").on("click", ".deleteBtn", function () {
@@ -72,11 +66,7 @@ $(document).ready(function () {
    });
    /*Timer*/
    $(".todo-li").on("click", "#custom-toggle", function () {
-      const timerId = $(this)
-         .parent(".wrapper")
-         .nextAll(".timer")
-         .find(".time")
-         .attr("data-timer");
+      const timerId = $(this).parent(".wrapper").nextAll(".timer").find(".time").attr("data-timer");
       if ($(this).val() == 1) {
          resetTimer(timerId);
       } else if ($(this).val() == 2) {
@@ -210,8 +200,7 @@ function startRunningTimersOnLoad() {
          if (element.state == "2") {
             const timer = createTimer(element.id);
             timer.elapsedTime = element.elapsedTime || 0;
-            console.log(timer)
-            timer.startTime = element.starttime? moment(element.starttime, "H:mm:ss"): null;
+            timer.startTime = element.starttime ? moment(element.starttime, "H:mm:ss") : null;
             timer.timerInterval = setInterval(() => updateTimer(timer), 1000);
             timers.push(timer);
          }
@@ -238,10 +227,7 @@ function startTimer(timerId) {
 function updateTimer(timer) {
    let localData = JSON.parse(localStorage.getItem("localData"));
    const currentTime = moment();
-   const duration = moment.duration(
-      currentTime.diff(timer.startTime) + timer.elapsedTime,
-      "milliseconds"
-   );
+   const duration = moment.duration(currentTime.diff(timer.startTime) + timer.elapsedTime,"milliseconds");
    const formattedTime = moment.utc(duration.asMilliseconds()).format("H:mm:ss");
    $(`#timer${timer.id}`).text(formattedTime);
 
@@ -290,7 +276,6 @@ function resetTimer(timerId) {
 function updateDataFromLocal() {
    let localData = localStorage.getItem("localData");
    let localArray = JSON.parse(localData);
-
    const oldRecord = localArray.find((m) => m.id == $("#txtId").val());
    oldRecord.title = $(".todo-inpput").find("#input1").val();
    $(".todo-inpput").find("button").html(`<i class="fa-solid fa-plus"></i>`);
