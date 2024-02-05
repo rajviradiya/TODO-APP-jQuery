@@ -45,6 +45,7 @@ $(document).ready(function () {
       }
       $(".todo-li").empty();
       loadDataFromLocal();
+      location.reload()
    });
    /*clear All*/
    $(".clear").on("click", function () {
@@ -116,6 +117,7 @@ function addDataToLocal(input1) {
       let localArray = JSON.parse(localData);
       if (inputval !== "") {
          let maxId = localArray.reduce((max, obj) => Math.max(max, obj.id), 0);
+         console.log(maxId)
          const obj = {
             id: maxId + 1,
             state: "1",
